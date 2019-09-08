@@ -1,0 +1,36 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 id="h1">MultiThreading learning</h1>
+    <script>
+      window.onload = function() {
+        var div = document.getElementById("h1");
+        var worker = new Worker("worker.js");
+
+        worker.postMessage("start");
+        setTimeout(function() {
+          console.log(div.style.marginLeft);
+          if (div.style.marginLeft == "") {
+            div.style.marginLeft = 0;
+          }
+          marginLeft = parseInt(div.style.marginLeft) + 5;
+          div.style.marginLeft = marginLeft + "px";
+
+          if (marginLeft < 500) {
+            setTimeout(arguments.callee, 50);
+          }
+        }, 50);
+        worker.onmessage("finish") = function (e){
+            console.log("res", e)
+            div.appendChild("<h1>FINISH</h1>")
+        }
+
+      };
+    </script>
+  </body>
+</html>
